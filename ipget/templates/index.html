@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IP Get</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <table>
+            <tr>
+                <th colspan="3">[root@{{ client_info.remote_hostname }}]: ~&gt;# ipget</th>
+            </tr>
+            <tr>
+                <td>curl {{ client_info.remote_hostname }}<br>curl {{ client_info.remote_hostname }}/ip</td>
+                <td>IP Address</td>
+                <td><b>{{ client_info.ip }}</b></td>
+            </tr>
+            <tr>
+                <td>curl {{ client_info.remote_hostname }}/xff</td>
+                <td>X-Forwarded-For</td>
+                <td>{{ client_info.x_forwarded_for }}</td>
+            </tr>
+            {% if ip_api %}
+            <tr>
+                <td></td>
+                <td>Location</td>
+                <td>{{ client_info.country }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td>curl {{ client_info.remote_hostname }}/xff</td>
+                <td>User Agent</td>
+                <td>{{ client_info.user_agent }}</td>
+            </tr>
+            <tr>
+                <td>curl {{ client_info.remote_hostname }}/headers</td>
+                <td>Headers</td>
+                <td>{{ client_info.headers|safe }}</td>
+            </tr>
+            <!-- Add more rows if needed -->
+        </table>
+    <footer>
+        <p>&copy; <span id="current-year"></span> IP Get v{{ app_version }}</p>
+    </footer>
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #1e1e1e; /* Dark background */
+    color: #ccffcc; /* Very light pastel green text */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background-color: #252526; /* Slightly lighter dark background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Adjust as needed */
+}
+
+h1 {
+    color: #98fb98; /* Pastel green color for headers */
+}
+
+table {
+    width: 100%;
+/*    table-layout: fixed; */
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+/*    border: 1px solid #3c3c3c; /* Dark border for the table */
+    border: 2px solid #4c4c4c; /* Thicker and darker border for the table */
+}
+
+th, td {
+    flex: 1;
+    text-align: left;
+    padding: 8px;
+    color: #ccffcc; /* Very light pastel green text for table data */
+    border: 2px solid #4c4c4c; /* Thicker and darker border for cells */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+tr:nth-child(even) {
+    background-color: #2d2d2d; /* Darker row background */
+}
+
+tr:nth-child(odd) {
+    background-color: #1e1e1e; /* Dark row background */
+}
+
+th {
+    background-color: #98fb98; /* Pastel green background for table headers */
+    color: #1e1e1e; /* Dark text for better contrast */
+    text-align: left;
+}
+
+th:nth-child(1), td:nth-child(1),
+th:nth-child(2), td:nth-child(2) {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+th:nth-child(3), td:nth-child(3) {
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+
+footer {
+    text-align: center; /* Center align text */
+    padding: 5px 0; /* Some padding */
+    margin-top: 20px; /* Space from content above */
+    background-color: #1e1e1e; /* Background color */
+    position: fixed; /* Fix to bottom */
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
