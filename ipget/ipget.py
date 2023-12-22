@@ -4,7 +4,8 @@ import os
 import requests
 
 
-app_version = "0.0.1"
+with open(os.path.join(os.path.realpath(os.path.dirname(__file__)), "VERSION")) as version_file:
+    app_version = version_file.read().strip()
 
 
 app = Flask(__name__)
