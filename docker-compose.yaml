@@ -2,12 +2,14 @@ version: '3.8'
 
 services:
   ipget:
-    image: prestigen/ipget:0.0.1
+    image: prestigen/ipget:0.0.2
     hostname: ipget
     environment:
-      - WORKERS=4
+      - GUNICORN_SERVER=    # default: ipget
+      - GUNICORN_BIND=      # default: "0.0.0.0:5000"
+      - GUNICORN_WORKERS=   # default: cores * 2 + 1
+      - GUNICORN_THREADS=   # default: 1
       - IP_API=false
-      - FLASK_ENV=production
     restart: always
 
   nginx:
