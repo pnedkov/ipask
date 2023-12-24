@@ -10,7 +10,8 @@
     <div class="container">
         <table>
             <tr>
-                <th colspan="3">[root@{{ client_info.remote_hostname }}]: ~&gt;# ipget</th>
+                <!-- <th colspan="3">[root@{{ client_info.remote_hostname }}]: ~&gt;# ipget</th> -->
+                <th colspan="3"># ipget</th>
             </tr>
             <tr>
                 <td>curl {{ client_info.remote_hostname }}<br>curl {{ client_info.remote_hostname }}/ip</td>
@@ -38,6 +39,9 @@
                 <td>curl {{ client_info.remote_hostname }}/headers</td>
                 <td>Headers</td>
                 <td>{{ client_info.headers|safe }}</td>
+            </tr>
+            <tr>
+                <th colspan="3"># <span class="blink">|</span></th>
             </tr>
             <!-- Add more rows if needed -->
         </table>
