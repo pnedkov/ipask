@@ -4,7 +4,9 @@ import os
 import requests
 
 
-with open(os.path.join(os.path.realpath(os.path.dirname(__file__)), "VERSION")) as version_file:
+with open(
+    os.path.join(os.path.realpath(os.path.dirname(__file__)), "VERSION")
+) as version_file:
     app_version = version_file.read().strip()
 
 
@@ -43,7 +45,7 @@ def home():
     if "mozilla" in user_agent or "chrome" in user_agent or "safari" in user_agent:
         client_info = {
             "ip": client_ip,
-            "remote_hostname": urlparse("//" + request.headers.get("Host")).hostname,
+            "remote_hostname": urlparse("//" + str(request.headers.get("Host"))).netloc,
             "x_forwarded_for": request.headers.get("X-Forwarded-For"),
             "country": get_country(client_ip),
             "user_agent": request.user_agent.string,
@@ -53,10 +55,10 @@ def home():
             "index.html",
             client_info=client_info,
             ip_api=ip_api,
-            app_version=app_version
+            app_version=app_version,
         )
-    else:
-        return f"{client_ip}\n"
+
+    return f"{client_ip}\n"
 
 
 @app.route("/ip")
@@ -91,8 +93,7 @@ def return_headers():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    if e:
-        return "404", 404
+    return f"{e}\n", 404
 
 
 if __name__ == "__main__":
