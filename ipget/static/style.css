@@ -64,6 +64,7 @@ th {
 
 td:nth-child(1) {
     color: var(--white);
+    font-size: 1.1em;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -76,6 +77,7 @@ td:nth-child(2) {
 
 th:nth-child(3), td:nth-child(3) {
     color: var(--lgray);
+    font-size: 0.9em;
     word-wrap: break-word;
     word-break: break-all;
     overflow-wrap: break-word;
@@ -110,7 +112,7 @@ footer {
 }
 
 p {
-    font-size: 32px;
+    font-size: 2em;
     font-weight: bold;
     color: var(--green);
 }
