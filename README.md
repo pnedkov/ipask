@@ -27,7 +27,7 @@ Environment variables:
 | ENV var | Default value |
 | :----: | :----: |
 | GUNICORN_SERVER | ipget |
-| [GUNICORN_BIND](https://docs.gunicorn.org/en/stable/settings.html#bind) | "0.0.0.0:5000" |
+| [GUNICORN_BIND](https://docs.gunicorn.org/en/stable/settings.html#bind) | "0.0.0.0:8080" |
 | [GUNICORN_WORKERS](https://docs.gunicorn.org/en/stable/settings.html#workers) | CPU Cores * 2 + 1 |
 | [GUNICORN_THREADS](https://docs.gunicorn.org/en/stable/settings.html#threads) | 1 |
 
@@ -65,15 +65,15 @@ docker compose up -d
 
 ## Test with a web browser and from a command line
 ```
-$ curl http://10.100.0.52:5000
+$ curl http://10.100.0.52:8080
 10.100.0.18
-$ curl http://10.100.0.52:5000/ip
+$ curl http://10.100.0.52:8080/ip
 10.100.0.18
-$ curl http://10.100.0.52:5000/ua
+$ curl http://10.100.0.52:8080/ua
 curl/8.0.1
-$ wget -qO - http://10.100.0.52:5000
+$ wget -qO - http://10.100.0.52:8080
 10.100.0.18
-$ wget -qO - http://10.100.0.52:5000/ua
+$ wget -qO - http://10.100.0.52:8080/ua
 Wget/1.21.3
 $
 ```

@@ -6,7 +6,7 @@ services:
     hostname: ipget
     environment:
       - GUNICORN_SERVER=    # default: ipget
-      - GUNICORN_BIND=      # default: "0.0.0.0:5000"
+      - GUNICORN_BIND=      # default: "0.0.0.0:8080"
       - GUNICORN_WORKERS=   # default: cores * 2 + 1
       - GUNICORN_THREADS=   # default: 1
       - IP_API=false

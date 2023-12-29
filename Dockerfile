@@ -7,7 +7,7 @@ COPY requirements.txt /ipget
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 8080
 
 ENV IP_API false
 
