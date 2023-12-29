@@ -11,39 +11,34 @@
         <table>
             <tr>
                 <!-- <th colspan="3">[root@{{ client_info.remote_hostname }}]: ~&gt;# ipget</th> -->
-                <th colspan="3"># ipget</th>
+                <th colspan="2"># ipget</th>
             </tr>
             <tr>
                 <td>curl {{ client_info.remote_hostname }}<br>curl {{ client_info.remote_hostname }}/ip</td>
-                <td>IP Address</td>
                 <td><p>{{ client_info.ip }}</p></td>
             </tr>
             {% if client_info.xff %}
             <tr>
                 <td>curl {{ client_info.remote_hostname }}/xff</td>
-                <td>X-Forwarded-For</td>
                 <td>{{ client_info.xff }}</td>
             </tr>
             {% endif %}
             {% if ip_api %}
             <tr>
                 <td></td>
-                <td>Location</td>
                 <td>{{ client_info.country }}</td>
             </tr>
             {% endif %}
             <tr>
                 <td>curl {{ client_info.remote_hostname }}/ua</td>
-                <td>User Agent</td>
                 <td>{{ client_info.user_agent }}</td>
             </tr>
             <tr>
                 <td>curl {{ client_info.remote_hostname }}/headers</td>
-                <td>Headers</td>
                 <td>{{ client_info.headers|safe }}</td>
             </tr>
             <tr>
-                <th colspan="3"># <span class="blink">|</span></th>
+                <th colspan="2"># <span class="blink">|</span></th>
             </tr>
             <!-- Add more rows if needed -->
         </table>
