@@ -37,16 +37,22 @@ def get_country(ip):
         return "N/A"
 
 
+def get_client_ip():
+    xff_ip = request.headers.get("X-Forwarded-For")
+
+    return xff_ip if xff_ip else request.headers.get("X-Real-IP", request.remote_addr)
+
+
 @app.route("/")
 def home():
-    client_ip = request.headers.get("X-Real-IP", request.remote_addr)
+    client_ip = get_client_ip()
     user_agent = request.headers.get("User-Agent", "").lower()
 
     if "mozilla" in user_agent or "chrome" in user_agent or "safari" in user_agent:
         client_info = {
             "ip": client_ip,
             "remote_hostname": urlparse("//" + str(request.headers.get("Host"))).netloc,
-            "x_forwarded_for": request.headers.get("X-Forwarded-For"),
+            "xff": request.headers.get("X-Forwarded-For"),
             "country": get_country(client_ip),
             "user_agent": request.user_agent.string,
             "headers": format_headers(request.headers),
@@ -63,7 +69,7 @@ def home():
 
 @app.route("/ip")
 def return_ip():
-    return f"{request.headers.get('X-Real-IP', request.remote_addr)}\n"
+    return f"{get_client_ip()}\n"
 
 
 @app.route("/host")
@@ -78,7 +84,7 @@ def return_xff():
 
 @app.route("/country")
 def return_country():
-    return f"{get_country(request.headers.get('X-Real-IP', request.remote_addr))}\n"
+    return f"{get_country(get_client_ip())}\n"
 
 
 @app.route("/ua")

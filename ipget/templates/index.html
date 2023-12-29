@@ -21,7 +21,7 @@
             <tr>
                 <td>curl {{ client_info.remote_hostname }}/xff</td>
                 <td>X-Forwarded-For</td>
-                <td>{{ client_info.x_forwarded_for }}</td>
+                <td>{{ client_info.xff }}</td>
             </tr>
             {% if ip_api %}
             <tr>

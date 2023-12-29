@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   ipget:
-    image: prestigen/ipget:0.0.2
+    image: prestigen/ipget:0.0.3
     hostname: ipget
     environment:
       - GUNICORN_SERVER=    # default: ipget
