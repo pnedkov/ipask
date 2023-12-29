@@ -18,11 +18,13 @@
                 <td>IP Address</td>
                 <td><p>{{ client_info.ip }}</p></td>
             </tr>
+            {% if client_info.xff %}
             <tr>
                 <td>curl {{ client_info.remote_hostname }}/xff</td>
                 <td>X-Forwarded-For</td>
                 <td>{{ client_info.xff }}</td>
             </tr>
+            {% endif %}
             {% if ip_api %}
             <tr>
                 <td></td>
