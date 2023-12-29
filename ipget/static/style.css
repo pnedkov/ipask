@@ -15,7 +15,6 @@
 }
 
 body {
-    color: var(--green);
     background-color: var(--black);
     font-family: 'Source Code Pro', monospace;
     margin: 0;
@@ -41,7 +40,6 @@ table {
 }
 
 th, td {
-    color: var(--green);
     flex: 1;
     text-align: left;
     padding: 8px;
