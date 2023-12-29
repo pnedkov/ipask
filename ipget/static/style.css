@@ -3,6 +3,7 @@
     --dgray:    #0D1117;
     --mgray:    #161B22;
     --gray:     #8D949F;
+    --lgray:    #d3d3d3;
     --green:    #83D882;
     --red:      #F87A54;
     --lred:     #FFC7A8;
@@ -16,7 +17,7 @@
 body {
     color: var(--green);
     background-color: var(--black);
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Source Code Pro', monospace;
     margin: 0;
     padding: 20px;
     display: flex;
@@ -76,7 +77,7 @@ td:nth-child(2) {
 }
 
 th:nth-child(3), td:nth-child(3) {
-    color: var(--green);
+    color: var(--lgray);
     word-wrap: break-word;
     word-break: break-all;
     overflow-wrap: break-word;
@@ -108,4 +109,10 @@ footer {
     100% {
         opacity: 1;
     }
+}
+
+p {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--green);
 }

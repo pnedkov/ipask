@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>IP Get</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -16,7 +16,7 @@
             <tr>
                 <td>curl {{ client_info.remote_hostname }}<br>curl {{ client_info.remote_hostname }}/ip</td>
                 <td>IP Address</td>
-                <td><b>{{ client_info.ip }}</b></td>
+                <td><p>{{ client_info.ip }}</p></td>
             </tr>
             <tr>
                 <td>curl {{ client_info.remote_hostname }}/xff</td>
@@ -45,12 +45,11 @@
             </tr>
             <!-- Add more rows if needed -->
         </table>
-    <footer>
-        <p>&copy; <span id="current-year"></span> IP Get v{{ app_version }}</p>
-    </footer>
-    <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-    </script>
+
+        <footer>&copy; <span id="current-year"></span> IP Get v{{ app_version }}</footer>
+        <script>
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        </script>
     </div>
 </body>
 </html>
