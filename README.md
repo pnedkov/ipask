@@ -1,26 +1,34 @@
 # IP Get
 Another ifconfig-like web application. This one is written in Python with Flask framework.
 
+---
+## Getting started
 
-## Clone the Git repository
+Install Python:
 ```
+pacman -S python
+```
+
+Clone the git repository:
+```sh
 git clone https://github.com/pnedkov/ipget.git
 cd ipget/
 ```
----
 
-## Generate the test key-pair
-Review the environment variables inside `resources/generate_cert.sh` and change them accordingly before you run the script.
+Create and activate the Python virtual environment:
+```sh
+python -m venv .venv
+source .venv/bin/activate
 ```
-CN=yourdomain.com DAYS=365 ./resources/generate_cert.sh
-```
-Or you could use your own key-pair. `docker-compose.yaml` expects to find them here:
-- $HOME/.nginx/key.pem
-- $HOME/.nginx/cert.pem
----
 
-## Run from the source
+Install the required Python packages:
+```sh
+pip install -r requirements.txt
 ```
+
+---
+## Run from the git repository:
+```sh
 ./run.sh
 ```
 Environment variables:
@@ -31,49 +39,72 @@ Environment variables:
 | [GUNICORN_WORKERS](https://docs.gunicorn.org/en/stable/settings.html#workers) | CPU Cores * 2 + 1 |
 | [GUNICORN_THREADS](https://docs.gunicorn.org/en/stable/settings.html#threads) | 1 |
 
-Overwriting the default values:
-```
-GUNICORN_BIND="127.0.0.1:8000" GUNICORN_WORKERS=4 GUNICORN_THREADS=2 ./run.sh
+Overwriting the default values (optional):
+```sh
+GUNICORN_WORKERS=4 GUNICORN_THREADS=2 ./run.sh
 ```
 
 To run `ipget` without the WSGI server (gunicorn):
-```
+```sh
 python run.py
 ```
----
 
-## Prerequisites for running in a container
-Install and start Docker
+Test:
+```sh
+$ curl <host>:8080[/ip|/ua|/headers]
+$ wget -qO - <host>:8080[/ip|/ua|/headers]
 ```
-pacman -S pacman -S docker-compose docker-buildx
-systemctl enable -now docker.service
-```
----
+Or navigate to `http://<host>:8080` from your browser.
 
-## Build a Docker container
+---
+## Run as a stand-alone container
+
+Install and start Docker:
+```sh
+sudo pacman -S docker docker-compose docker-buildx
+sudo usermod -aG docker $USER
+sudo systemctl enable -now docker.service
 ```
+
+Build the container:
+```sh
 docker build -t ipget .
 ```
----
 
-## Run with Docker Compose
-Review and update `image:` and the `GUNICORN_*` environment variables in `docker-compose.yaml`.
+Run:
+```sh
+docker run --rm -p 8080:8080 ipget
 ```
+
+Test:
+```sh
+curl <host>:8080[/ip|/ua|/headers]
+wget -qO - <host>:8080[/ip|/ua|/headers]
+```
+Or navigate to `http://<host>:8080` from your browser.
+
+---
+## Run with Docker Compose behind nginx reverse proxy
+
+Generate the test key and certificate utilized by the nginx reverse proxy.
+
+Review the environment variables inside `resources/generate_cert.sh` and change them accordingly before you run the script.
+```sh
+CN=yourdomain.com DAYS=365 ./resources/generate_cert.sh
+```
+Or you could use your own key and certificate. `docker-compose.yaml` expects to find them here:
+- $HOME/.nginx/key.pem
+- $HOME/.nginx/cert.pem
+
+Run:
+```sh
 docker compose up -d
 ```
----
+This will pull the latest `ipget` container from https://hub.docker.com.
 
-## Test with a web browser and from a command line
+Test:
+```sh
+curl -kL <host>[/ip|/ua|/headers]
+wget --no-check-certificate -qO - <host>[/ip|/ua|/headers]
 ```
-$ curl http://10.100.0.52:8080
-10.100.0.18
-$ curl http://10.100.0.52:8080/ip
-10.100.0.18
-$ curl http://10.100.0.52:8080/ua
-curl/8.0.1
-$ wget -qO - http://10.100.0.52:8080
-10.100.0.18
-$ wget -qO - http://10.100.0.52:8080/ua
-Wget/1.21.3
-$
-```
+Or navigate to `<host>` from your browser. It will automatically redirect to https and you have to accept the self-signed certificate.
