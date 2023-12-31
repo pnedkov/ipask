@@ -18,8 +18,8 @@ def get_env_bool(env_var, default_value):
     )
 
 
-geoip = get_env_bool("GEOIP", "true")
-reverse_dns_lookup = get_env_bool("REVERSE_DNS_LOOKUP", "true")
+geoip = get_env_bool("GEOIP", "false")
+reverse_dns_lookup = get_env_bool("REVERSE_DNS_LOOKUP", "false")
 
 
 def format_headers(headers):

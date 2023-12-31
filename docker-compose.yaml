@@ -8,8 +8,8 @@ services:
       - GUNICORN_SERVER=    # default: ipget
       - GUNICORN_WORKERS=   # default: cores * 2 + 1
       - GUNICORN_THREADS=   # default: 1
-      - GEOIP=true
-      - REVERSE_DNS_LOOKUP=true
+      - GEOIP=false
+      - REVERSE_DNS_LOOKUP=false
     restart: always
 
   nginx:

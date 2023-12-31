@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8080
 
-ENV GEOIP true
-ENV REVERSE_DNS_LOOKUP true
+ENV GEOIP false
+ENV REVERSE_DNS_LOOKUP false
 
 CMD ["gunicorn", "-c", "gunicorn.py", "ipget:app"]
