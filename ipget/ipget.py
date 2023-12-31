@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 import os
 import socket
+import geoip2.database
 
 with open(
     os.path.join(os.path.realpath(os.path.dirname(__file__)), "VERSION")
@@ -17,7 +18,8 @@ def get_env_bool(env_var, default_value):
     )
 
 
-reverse_dns_lookup = get_env_bool("REVERSE_DNS_LOOKUP", "yes")
+geoip = get_env_bool("GEOIP", "true")
+reverse_dns_lookup = get_env_bool("REVERSE_DNS_LOOKUP", "true")
 
 
 def format_headers(headers):
@@ -42,21 +44,47 @@ def get_client_host(ip):
     return c_host
 
 
+def get_client_geo(ip):
+    c_city = c_country = None
+
+    if geoip:
+        try:
+            geo_reader = geoip2.database.Reader("resources/GeoLite2-City.mmdb")
+        except Exception:
+            pass
+        else:
+            try:
+                geo_response = geo_reader.city(ip)
+            except Exception:
+                pass
+            else:
+                c_city = geo_response.city.name
+                c_country = geo_response.country.name
+
+    c_geo = {"city": c_city, "country": c_country}
+
+    return c_geo
+
+
 @app.route("/")
 def home():
     client_ip = get_client_ip()
-    user_agent = request.user_agent.string
+    client_ua = request.user_agent.string
 
-    if "Mozilla" in user_agent or "Chrome" in user_agent or "Safari" in user_agent:
+    if "Mozilla" in client_ua or "Chrome" in client_ua or "Safari" in client_ua:
+        client_geo = get_client_geo(client_ip)
+        client_city = client_geo.get("city")
+        client_country = client_geo.get("country")
+
         client_info = {
             "ip": client_ip,
             "host": get_client_host(client_ip),
             "xff": request.headers.get("X-Forwarded-For"),
-            "user_agent": user_agent,
+            "user_agent": client_ua,
             "headers": format_headers(request.headers),
+            "city": client_city,
+            "country": client_country,
             "remote_hostname": request.host,
-            "city": None,
-            "country": None,
         }
 
         return render_template(
@@ -86,12 +114,18 @@ def return_xff():
 
 @app.route("/city")
 def return_city():
-    return "None\n"
+    c_ip = get_client_ip()
+    c_geo = get_client_geo(c_ip)
+    c_geo_city = c_geo.get("city")
+    return f"{c_geo_city}\n"
 
 
 @app.route("/country")
 def return_country():
-    return "None\n"
+    c_ip = get_client_ip()
+    c_geo = get_client_geo(c_ip)
+    c_geo_country = c_geo.get("country")
+    return f"{c_geo_country}\n"
 
 
 @app.route("/ua")
