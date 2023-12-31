@@ -9,5 +9,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8080
 
+ENV REVERSE_DNS_LOOKUP true
 
 CMD ["gunicorn", "-c", "gunicorn.py", "ipget:app"]

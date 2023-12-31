@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 import os
-
+import socket
 
 with open(
     os.path.join(os.path.realpath(os.path.dirname(__file__)), "VERSION")
@@ -9,6 +9,7 @@ with open(
 
 
 app = Flask(__name__)
+reverse_dns_lookup = os.getenv("REVERSE_DNS_LOOKUP", "true").lower() == "true"
 
 
 def format_headers(headers):
@@ -21,14 +22,22 @@ def get_client_ip():
     return xff_ip if xff_ip else request.headers.get("X-Real-IP", request.remote_addr)
 
 
+def get_client_host(ip):
+    if ip and reverse_dns_lookup:
+        return socket.gethostbyaddr(str(ip))[0]
+
+    return None
+
+
 @app.route("/")
 def home():
     client_ip = get_client_ip()
-    user_agent = request.headers.get("User-Agent", "").lower()
+    user_agent = request.user_agent.string
 
-    if "mozilla" in user_agent or "chrome" in user_agent or "safari" in user_agent:
+    if "Mozilla" in user_agent or "Chrome" in user_agent or "Safari" in user_agent:
         client_info = {
             "ip": client_ip,
+            "host": get_client_host(client_ip),
             "xff": request.headers.get("X-Forwarded-For"),
             "user_agent": user_agent,
             "headers": format_headers(request.headers),
@@ -53,7 +62,8 @@ def return_ip():
 
 @app.route("/host")
 def return_host():
-    return f"{request.headers.get('Host')}\n"
+    c_ip = str(get_client_ip())
+    return f"{get_client_host(c_ip)}\n"
 
 
 @app.route("/xff")

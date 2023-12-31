@@ -17,6 +17,12 @@
                 <td>curl {{ client_info.remote_hostname }}<br>curl {{ client_info.remote_hostname }}/ip</td>
                 <td><p>{{ client_info.ip }}</p></td>
             </tr>
+            {% if client_info.host %}
+            <tr>
+                <td>curl {{ client_info.remote_hostname }}/host</td>
+                <td>{{ client_info.host }}</td>
+            </tr>
+            {% endif %}
             {% if client_info.xff %}
             <tr>
                 <td>curl {{ client_info.remote_hostname }}/xff</td>
