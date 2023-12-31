@@ -84,7 +84,7 @@ def home():
             "headers": format_headers(request.headers),
             "city": client_city,
             "country": client_country,
-            "remote_hostname": request.host,
+            "server_host": request.host,
         }
 
         return render_template(

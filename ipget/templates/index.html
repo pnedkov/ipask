@@ -10,37 +10,37 @@
     <div class="container">
         <table>
             <tr>
-                <!-- <th colspan="3">[root@{{ client_info.remote_hostname }}]: ~&gt;# ipget</th> -->
+                <!-- <th colspan="3">[root@{{ client_info.server_host }}]: ~&gt;# ipget</th> -->
                 <th colspan="2"># ipget</th>
             </tr>
             <tr>
-                <td>curl {{ client_info.remote_hostname }}<br>curl {{ client_info.remote_hostname }}/ip</td>
+                <td>curl {{ client_info.server_host }}<br>curl {{ client_info.server_host }}/ip</td>
                 <td><p>{{ client_info.ip }}</p></td>
             </tr>
             {% if client_info.host %}
             <tr>
-                <td>curl {{ client_info.remote_hostname }}/host</td>
+                <td>curl {{ client_info.server_host }}/host</td>
                 <td>{{ client_info.host }}</td>
             </tr>
             {% endif %}
             {% if client_info.xff %}
             <tr>
-                <td>curl {{ client_info.remote_hostname }}/xff</td>
+                <td>curl {{ client_info.server_host }}/xff</td>
                 <td>{{ client_info.xff }}</td>
             </tr>
             {% endif %}
             {% if client_info.city and client_info.country %}
             <tr>
-                <td>curl {{ client_info.remote_hostname }}/city<br>curl {{ client_info.remote_hostname }}/country</td>
+                <td>curl {{ client_info.server_host }}/city<br>curl {{ client_info.server_host }}/country</td>
                 <td>{{ client_info.city }}, {{ client_info.country }}</td>
             </tr>
             {% endif %}
             <tr>
-                <td>curl {{ client_info.remote_hostname }}/ua</td>
+                <td>curl {{ client_info.server_host }}/ua</td>
                 <td>{{ client_info.user_agent }}</td>
             </tr>
             <tr>
-                <td>curl {{ client_info.remote_hostname }}/headers</td>
+                <td>curl {{ client_info.server_host }}/headers</td>
                 <td>{{ client_info.headers|safe }}</td>
             </tr>
             <tr>
