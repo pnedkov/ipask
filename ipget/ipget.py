@@ -7,9 +7,17 @@ with open(
 ) as version_file:
     app_version = version_file.read().strip()
 
-
 app = Flask(__name__)
-reverse_dns_lookup = os.getenv("REVERSE_DNS_LOOKUP", "true").lower() == "true"
+
+
+def get_env_bool(env_var, default_value):
+    return bool(
+        os.getenv(env_var, default_value).lower()
+        in ["1", "on", "yes", "yup", "yeah", "true", "enable", "enabled", "certainly"]
+    )
+
+
+reverse_dns_lookup = get_env_bool("REVERSE_DNS_LOOKUP", "yes")
 
 
 def format_headers(headers):
