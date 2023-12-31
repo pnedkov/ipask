@@ -1,14 +1,27 @@
 from flask import Flask, request, render_template
 import os
 import socket
+import subprocess
 import geoip2.database
 
-with open(
-    os.path.join(os.path.realpath(os.path.dirname(__file__)), "VERSION")
-) as version_file:
-    app_version = version_file.read().strip()
+
+def get_app_version():
+    ver = "v0.0.0-0-a1b2c3d4"
+
+    try:
+        ver = (
+            subprocess.check_output(["git", "describe", "--always", "--long"])
+            .strip()
+            .decode()
+        )
+    except Exception:
+        pass
+
+    return ver
+
 
 app = Flask(__name__)
+app_version = get_app_version()
 
 
 def get_env_bool(env_var, default_value):
