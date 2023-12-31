@@ -23,10 +23,15 @@ def get_client_ip():
 
 
 def get_client_host(ip):
-    if ip and reverse_dns_lookup:
-        return socket.gethostbyaddr(str(ip))[0]
+    c_host = None
 
-    return None
+    if ip and reverse_dns_lookup:
+        try:
+            c_host = socket.gethostbyaddr(str(ip))[0]
+        except Exception:
+            pass
+
+    return c_host
 
 
 @app.route("/")
