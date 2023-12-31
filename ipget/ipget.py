@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 import os
+import git
 import socket
-import subprocess
 import geoip2.database
 
 
@@ -9,11 +9,8 @@ def get_app_version():
     ver = "v0.0.0-0-a1b2c3d4"
 
     try:
-        ver = (
-            subprocess.check_output(["git", "describe", "--always", "--long"])
-            .strip()
-            .decode()
-        )
+        repo = git.Repo(".")
+        ver = repo.git.describe(always=True, long=True)
     except Exception:
         pass
 

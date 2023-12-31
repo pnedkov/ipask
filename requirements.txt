@@ -1,3 +1,4 @@
 Flask
-gunicorn
 geoip2
+gitpython
+gunicorn
