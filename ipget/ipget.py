@@ -35,10 +35,6 @@ geoip = get_env_bool("GEOIP", "false")
 reverse_dns_lookup = get_env_bool("REVERSE_DNS_LOOKUP", "false")
 
 
-def format_headers(headers):
-    return "<br>".join(f"{key}: {value}" for key, value in headers.items())
-
-
 def get_client_ip():
     xff_ip = request.headers.get("X-Forwarded-For")
 
@@ -77,6 +73,10 @@ def get_client_geo(ip):
     c_geo = {"city": c_city, "country": c_country}
 
     return c_geo
+
+
+def format_headers(headers):
+    return "<br>".join(f"{key}: {value}" for key, value in headers.items())
 
 
 @app.route("/")
