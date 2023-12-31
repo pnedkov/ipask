@@ -8,7 +8,6 @@ services:
       - GUNICORN_SERVER=    # default: ipget
       - GUNICORN_WORKERS=   # default: cores * 2 + 1
       - GUNICORN_THREADS=   # default: 1
-      - IP_API=false
     restart: always
 
   nginx:

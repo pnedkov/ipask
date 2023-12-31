@@ -23,10 +23,10 @@
                 <td>{{ client_info.xff }}</td>
             </tr>
             {% endif %}
-            {% if ip_api %}
+            {% if client_info.city and client_info.country %}
             <tr>
-                <td></td>
-                <td>{{ client_info.country }}</td>
+                <td>curl {{ client_info.remote_hostname }}/city<br>curl {{ client_info.remote_hostname }}/country</td>
+                <td>{{ client_info.city }}, {{ client_info.country }}</td>
             </tr>
             {% endif %}
             <tr>
