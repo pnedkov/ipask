@@ -1,110 +1,131 @@
 # IP Get
 Another ifconfig-like web application. This one is written in Python with Flask framework.
 
+https://ip.aumaton.com
+
 ---
 ## Getting started
 
-Install Python:
-```
-pacman -S python
-```
+* Install Python:
+  ```
+  pacman -S python
+  ```
 
-Clone the git repository:
-```sh
-git clone https://github.com/pnedkov/ipget.git
-cd ipget/
-```
+* Clone the git repository:
+  ```sh
+  git clone https://github.com/pnedkov/ipget.git
+  cd ipget/
+  ```
 
-Create and activate the Python virtual environment:
-```sh
-python -m venv .venv
-source .venv/bin/activate
-```
+* Create and activate the Python virtual environment:
+  ```sh
+  python -m venv .venv
+  source .venv/bin/activate
+  ```
 
-Install the required Python packages:
-```sh
-pip install -r requirements.txt
-```
+* Install the required Python packages:
+  ```sh
+  pip install -r requirements.txt
+  ```
 
----
-## Run from the git repository:
-```sh
-./run.sh
-```
-Environment variables:
-| ENV var | Default value |
-| :----: | :----: |
-| GUNICORN_SERVER | ipget |
-| [GUNICORN_BIND](https://docs.gunicorn.org/en/stable/settings.html#bind) | "0.0.0.0:8080" |
-| [GUNICORN_WORKERS](https://docs.gunicorn.org/en/stable/settings.html#workers) | CPU Cores * 2 + 1 |
-| [GUNICORN_THREADS](https://docs.gunicorn.org/en/stable/settings.html#threads) | 1 |
+* (Optional) Download the GeoIP database:
 
-Overwriting the default values (optional):
-```sh
-GUNICORN_WORKERS=4 GUNICORN_THREADS=2 ./run.sh
-```
+  Credit: https://github.com/P3TERX/GeoLite.mmdb
 
-To run `ipget` without the WSGI server (gunicorn):
-```sh
-python run.py
-```
-
-Test:
-```sh
-$ curl <host>:8080[/ip|/ua|/headers]
-$ wget -qO - <host>:8080[/ip|/ua|/headers]
-```
-Or navigate to `http://<host>:8080` from your browser.
+  wget:
+  ```
+  wget git.io/GeoLite2-City.mmdb -P resources/
+  ```
+  curl:
+  ```
+  curl -L git.io/GeoLite2-City.mmdb -o resources/GeoLite2-City.mmdb
+  ```
+  The GeoIP feature is toggled with the `GEOIP` environment variable.
 
 ---
-## Run as a stand-alone container
+## Run from the source code:
 
-Install and start Docker:
-```sh
-sudo pacman -S docker docker-compose docker-buildx
-sudo usermod -aG docker $USER
-sudo systemctl enable -now docker.service
-```
+* Run using `run.sh`:
+  ```sh
+  ./run.sh
+  ```
+  Environment variables:
+  | ENV var | Default value |
+  | :----: | :----: |
+  | GUNICORN_SERVER | ipget |
+  | [GUNICORN_WORKERS](https://docs.gunicorn.org/en/stable/settings.html#workers) | CPU Cores * 2 + 1 |
+  | [GUNICORN_THREADS](https://docs.gunicorn.org/en/stable/settings.html#threads) | 1 |
+  | GEOIP | false |
+  | REVERSE_DNS_LOOKUP | false |
 
-Build the container:
-```sh
-docker build -t ipget .
-```
+  Example:
+  ```sh
+  REVERSE_DNS_LOOKUP=true GUNICORN_WORKERS=4 GUNICORN_THREADS=2 ./run.sh
+  ```
 
-Run:
-```sh
-docker run --rm -p 8080:8080 ipget
-```
+* Run using `run.py`:
 
-Test:
-```sh
-curl <host>:8080[/ip|/ua|/headers]
-wget -qO - <host>:8080[/ip|/ua|/headers]
-```
-Or navigate to `http://<host>:8080` from your browser.
+  This will run it without the Python WSGI HTTP Server - [gunicorn](https://gunicorn.org):
+  ```sh
+  python run.py
+  ```
+
+* Test:
+  ```sh
+  $ curl <host>:8080[/ip|/host|/xff|/ua|/headers|/city|/country]
+  $ wget -qO - <host>:8080[/ip|/host|/xff|/ua|/headers|/city|/country]
+  ```
+  Or navigate to `http://<host>:8080` from your browser.
+
+---
+## Run in a stand-alone container
+
+* Install and start Docker:
+  ```sh
+  sudo pacman -S docker docker-compose docker-buildx
+  sudo usermod -aG docker $USER
+  sudo systemctl enable -now docker.service
+  ```
+
+* Build the container:
+  ```sh
+  docker build -t ipget .
+  ```
+
+* Run:
+  ```sh
+  docker run --rm -p 8080:8080 ipget
+  ```
+
+* Test:
+  ```sh
+  curl <host>:8080[/ip|/host|/xff|/ua|/headers|/city|/country]
+  wget -qO - <host>:8080[/ip|/host|/xff|/ua|/headers|/city|/country]
+  ```
+  Or navigate to `http://<host>:8080` from your browser.
 
 ---
 ## Run with Docker Compose behind nginx reverse proxy
 
-Generate the test key and certificate utilized by the nginx reverse proxy.
+* Generate the test key and certificate utilized by the nginx reverse proxy.
 
-Review the environment variables inside `resources/generate_cert.sh` and change them accordingly before you run the script.
-```sh
-CN=yourdomain.com DAYS=365 ./resources/generate_cert.sh
-```
-Or you could use your own key and certificate. `docker-compose.yaml` expects to find them here:
-- $HOME/.nginx/key.pem
-- $HOME/.nginx/cert.pem
+  Review the environment variables inside `resources/generate_cert.sh` and set them accordingly like so:
+  ```sh
+  CN=yourdomain.com ./resources/generate_cert.sh
+  ```
+  Or you could use your own key and certificate. `docker-compose.yaml` expects to find them here:
+  - $HOME/.nginx/key.pem
+  - $HOME/.nginx/cert.pem
 
-Run:
-```sh
-docker compose up -d
-```
-This will pull the latest `ipget` container from https://hub.docker.com.
+* Run:
+  ```sh
+  docker compose up -d
+  ```
+  This will pull the latest `ipget` container from https://hub.docker.com.
 
-Test:
-```sh
-curl -kL <host>[/ip|/ua|/headers]
-wget --no-check-certificate -qO - <host>[/ip|/ua|/headers]
-```
-Or navigate to `<host>` from your browser. It will automatically redirect to https and you have to accept the self-signed certificate.
+* Test:
+  ```sh
+  curl -kL <host>[/ip|/host|/xff|/ua|/headers|/city|/country]
+  wget --no-check-certificate -qO - <host>[/ip|/host|/xff|/ua|/headers|/city|/country]
+  ```
+  Or navigate to `<host>` from your browser. It will automatically redirect to https and you have to accept the self-signed certificate.
