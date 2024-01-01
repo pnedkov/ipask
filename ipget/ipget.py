@@ -6,7 +6,7 @@ import geoip2.database
 
 
 def get_app_version():
-    ver = "v0.0.0-0-a1b2c3d4"
+    ver = "v0.0.0-0-ga1b2c3d4"
 
     try:
         ver = (
