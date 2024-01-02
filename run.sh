@@ -1,3 +1,3 @@
 #!/bin/sh
 
-gunicorn -c ipget/gunicorn.py ipget.ipget:app
+gunicorn -c ipask/gunicorn.py ipask.ipask:app

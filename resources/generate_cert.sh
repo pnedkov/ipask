@@ -4,7 +4,7 @@
 ALG_NAME=${ALG_NAME:-rsa}
 ALG_SIZE=${ALG_SIZE:-4096}
 DAYS=${DAYS:-3650}
-CN=${CN:-ip.aumaton.com}
+CN=${CN:-ipask.me}
 
 # Directory where the key and certificate will be stored
 CERT_DIR="$HOME/.nginx"

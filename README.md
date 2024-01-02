@@ -1,7 +1,7 @@
-# IP Get
+# IP Ask
 Another ifconfig-like web application. This one is written in Python with Flask framework.
 
-https://ip.aumaton.com
+https://ipask.me
 
 ---
 ## Getting started
@@ -13,8 +13,8 @@ https://ip.aumaton.com
 
 * Clone the git repository:
   ```sh
-  git clone https://github.com/pnedkov/ipget.git
-  cd ipget/
+  git clone https://github.com/pnedkov/ipask.git
+  cd ipask/
   ```
 
 * Create and activate the Python virtual environment:
@@ -52,7 +52,7 @@ https://ip.aumaton.com
   Environment variables:
   | ENV var | Default value |
   | :----: | :----: |
-  | GUNICORN_SERVER | ipget |
+  | GUNICORN_SERVER | ipask |
   | [GUNICORN_WORKERS](https://docs.gunicorn.org/en/stable/settings.html#workers) | CPU Cores * 2 + 1 |
   | [GUNICORN_THREADS](https://docs.gunicorn.org/en/stable/settings.html#threads) | 1 |
   | GEOIP | false |
@@ -89,12 +89,12 @@ https://ip.aumaton.com
 
 * Build the container:
   ```sh
-  docker build -t ipget .
+  docker build -t ipask .
   ```
 
 * Run:
   ```sh
-  docker run --rm -p 8080:8080 ipget
+  docker run --rm -p 8080:8080 ipask
   ```
 
 * Test:
@@ -121,7 +121,7 @@ https://ip.aumaton.com
   ```sh
   docker compose up -d
   ```
-  This will pull the latest `ipget` container from https://hub.docker.com.
+  This will pull the latest `ipask` container from https://hub.docker.com.
 
 * Test:
   ```sh

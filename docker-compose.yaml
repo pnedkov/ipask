@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  ipget:
-    image: prestigen/ipget:latest
-    hostname: ipget
+  ipask:
+    image: prestigen/ipask:latest
+    hostname: ipask
     environment:
-      - GUNICORN_SERVER=    # default: ipget
+      - GUNICORN_SERVER=    # default: ipask
       - GUNICORN_WORKERS=   # default: cores * 2 + 1
       - GUNICORN_THREADS=   # default: 1
       - GEOIP=false
@@ -14,7 +14,7 @@ services:
 
   nginx:
     image: nginx:latest
-    hostname: ipget-nginx
+    hostname: ipask-nginx
     ports:
       - "80:80"
       - "443:443"
@@ -23,7 +23,7 @@ services:
       - $HOME/.nginx/cert.pem:/etc/nginx/cert.pem:ro
       - $HOME/.nginx/key.pem:/etc/nginx/key.pem:ro
     depends_on:
-      - ipget
+      - ipask
     restart: always
     logging:
       driver: none
