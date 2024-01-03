@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  ipask:
+    image: ipask
+    environment:
+      - REVERSE_DNS_LOOKUP=true
+    build:
+      context: .
+      dockerfile: Dockerfile
