@@ -1,7 +1,7 @@
 # IP Ask
 Another ifconfig-like web application. This one is written in Python with Flask framework.
 
-https://ipask.me
+<a href="https://ipask.me"><kbd>ipask.me</kbd></a>
 
 ---
 ## Getting started
@@ -32,15 +32,27 @@ https://ipask.me
 
   Credit: https://github.com/P3TERX/GeoLite.mmdb
 
-  wget:
+    * wget:
+      ```
+      wget git.io/GeoLite2-City.mmdb -P resources/
+      ```
+    * curl:
+      ```
+      curl -L git.io/GeoLite2-City.mmdb -o resources/GeoLite2-City.mmdb
+      ```
+    The GeoIP feature is toggled with the `GEOIP` environment variable.
+      
+* (Optional) Generate the test key and certificate utilized by the nginx reverse proxy.
+  
+  You only need this if you utilize `docker-compose.yaml` and run IP Ask behind nginx.
+
+  Review the environment variables inside `resources/generate_cert.sh` and set them accordingly like so:
+  ```sh
+  CN=yourdomain.com ./resources/generate_cert.sh
   ```
-  wget git.io/GeoLite2-City.mmdb -P resources/
-  ```
-  curl:
-  ```
-  curl -L git.io/GeoLite2-City.mmdb -o resources/GeoLite2-City.mmdb
-  ```
-  The GeoIP feature is toggled with the `GEOIP` environment variable.
+  Or you could use your own key and certificate. `docker-compose.yaml` expects to find them here:
+  - $HOME/.nginx/key.pem
+  - $HOME/.nginx/cert.pem
 
 ---
 ## Run from the source code:
@@ -78,23 +90,25 @@ https://ipask.me
   Or navigate to `http://<host>:8080` from your browser.
 
 ---
-## Run in a stand-alone container
+## Prerequisites for running in a container
 
-* Install and start Docker:
   ```sh
   sudo pacman -S docker docker-compose docker-buildx
   sudo usermod -aG docker $USER
   sudo systemctl enable -now docker.service
   ```
 
-* Build the container:
+---
+## Run in a stand-alone container
+
+* Build:
   ```sh
   docker build -t ipask .
   ```
 
 * Run:
   ```sh
-  docker run --rm -p 8080:8080 ipask
+  docker run -d -p 8080:8080 ipask
   ```
 
 * Test:
@@ -107,21 +121,20 @@ https://ipask.me
 ---
 ## Run with Docker Compose behind nginx reverse proxy
 
-* Generate the test key and certificate utilized by the nginx reverse proxy.
-
-  Review the environment variables inside `resources/generate_cert.sh` and set them accordingly like so:
-  ```sh
-  CN=yourdomain.com ./resources/generate_cert.sh
-  ```
-  Or you could use your own key and certificate. `docker-compose.yaml` expects to find them here:
-  - $HOME/.nginx/key.pem
-  - $HOME/.nginx/cert.pem
-
 * Run:
-  ```sh
-  docker compose up -d
-  ```
-  This will pull the latest `ipask` container from https://hub.docker.com.
+
+  Two options: Build the container or pull the latest published container version from hub.docker.com
+  
+  * Build and run:
+    ```sh
+    docker compose up -d
+    ```
+    Use the `--build` option in order to force the build process in case you already have the `ipask` container and want a new one.
+
+  * Pull and run:
+    ```sh
+    docker compose -f docker-compose.yaml up -d
+    ```
 
 * Test:
   ```sh
