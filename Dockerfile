@@ -5,12 +5,10 @@ RUN apt-get install -y git
 
 WORKDIR /ipask
 
-COPY .git .git
-COPY ipask ipask
-COPY requirements.txt .
-ADD https://git.io/GeoLite2-City.mmdb resources/GeoLite2-City.mmdb
-
+RUN git clone https://github.com/pnedkov/ipask.git .
 RUN pip install --no-cache-dir -r requirements.txt
+
+ADD https://git.io/GeoLite2-City.mmdb resources/GeoLite2-City.mmdb
 
 EXPOSE 8080
 
