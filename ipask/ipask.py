@@ -112,7 +112,12 @@ def home():
     client_ip = get_client_ip()
     client_ua = request.user_agent.string
 
-    if "Mozilla" in client_ua or "Chrome" in client_ua or "Safari" in client_ua:
+    if (
+        "Mozilla" in client_ua
+        or "Elinks" in client_ua
+        or "Links" in client_ua
+        or "Lynx" in client_ua
+    ):
         client_geo = get_client_geo(client_ip)
         client_city = client_geo.get("city")
         client_country = client_geo.get("country")
