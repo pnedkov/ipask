@@ -4,6 +4,7 @@ services:
   ipask:
     image: ipask
     environment:
+      - IPASK_PROD=false
       - REVERSE_DNS_LOOKUP=true
     build:
       context: .

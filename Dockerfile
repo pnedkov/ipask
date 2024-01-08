@@ -14,6 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8080
 
+ENV IPASK_PROD true
 ENV GEOIP false
 ENV REVERSE_DNS_LOOKUP false
 

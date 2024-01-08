@@ -5,8 +5,9 @@ services:
     image: prestigen/ipask:latest
     hostname: ipask
     environment:
+      - IPASK_PROD=true
       - GUNICORN_SERVER=    # default: ipask
-      - GUNICORN_WORKERS=   # default: cores * 2 + 1
+      - GUNICORN_WORKERS=   # default: (cores * 2 + 1) if IPASK_PROD or 1
       - GUNICORN_THREADS=   # default: 1
       - GEOIP=false
       - REVERSE_DNS_LOOKUP=false
