@@ -14,33 +14,33 @@
                 <th colspan="2"># ipask</th>
             </tr>
             <tr>
-                <td>curl -L {{ client_info.server_host }}<br>curl -L {{ client_info.server_host }}/ip</td>
+                <td>curl {{ client_info.server_host }}<br>curl {{ client_info.server_host }}/ip</td>
                 <td><p>{{ client_info.ip }}</p></td>
             </tr>
             {% if client_info.host %}
             <tr>
-                <td>curl -L {{ client_info.server_host }}/host</td>
+                <td>curl {{ client_info.server_host }}/host</td>
                 <td>{{ client_info.host }}</td>
             </tr>
             {% endif %}
             {% if client_info.xff %}
             <tr>
-                <td>curl -L {{ client_info.server_host }}/xff</td>
+                <td>curl {{ client_info.server_host }}/xff</td>
                 <td>{{ client_info.xff }}</td>
             </tr>
             {% endif %}
             {% if client_info.city and client_info.country %}
             <tr>
-                <td>curl -L {{ client_info.server_host }}/city<br>curl -L {{ client_info.server_host }}/country</td>
+                <td>curl {{ client_info.server_host }}/city<br>curl {{ client_info.server_host }}/country</td>
                 <td>{{ client_info.city }}, {{ client_info.country }}</td>
             </tr>
             {% endif %}
             <tr>
-                <td>curl -L {{ client_info.server_host }}/ua</td>
+                <td>curl {{ client_info.server_host }}/ua</td>
                 <td>{{ client_info.user_agent }}</td>
             </tr>
             <tr>
-                <td>curl -L {{ client_info.server_host }}/headers</td>
+                <td>curl {{ client_info.server_host }}/headers</td>
                 <td>{{ client_info.headers|safe }}</td>
             </tr>
             <tr>
