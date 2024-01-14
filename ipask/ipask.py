@@ -152,7 +152,7 @@ def return_ip():
 
 
 #
-# /home route
+# /host route
 # Returns the client's FQDN
 #
 @app.route("/host")
