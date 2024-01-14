@@ -4,7 +4,12 @@ Another ifconfig-like web application. This one is written in Python with Flask 
 <a href="https://ipask.me"><kbd>ipask.me</kbd></a>
 
 ---
+<details>
+<summary>
+  
 ## Getting started
+
+</summary>
 
 * Install Python:
   ```
@@ -53,9 +58,16 @@ Another ifconfig-like web application. This one is written in Python with Flask 
   Or you could use your own key and certificate. `docker-compose.yaml` expects to find them here:
   - $HOME/.nginx/key.pem
   - $HOME/.nginx/cert.pem
+</details>
 
 ---
-## Run from the source code:
+<details>
+<summary>
+  
+## Run from the source code
+
+</summary>
+
 
 * Run using `run.sh`:
   ```sh
@@ -97,9 +109,15 @@ Another ifconfig-like web application. This one is written in Python with Flask 
   sudo usermod -aG docker $USER
   sudo systemctl enable -now docker.service
   ```
+</details>
 
 ---
+<details>
+<summary>
+  
 ## Run in a stand-alone container
+
+</summary>
 
 * Build:
   ```sh
@@ -117,9 +135,15 @@ Another ifconfig-like web application. This one is written in Python with Flask 
   wget -qO - <host>:8080[/ip|/host|/xff|/ua|/headers|/city|/country]
   ```
   Or navigate to `http://<host>:8080` from your browser.
+</details>
 
 ---
+<details>
+<summary>
+  
 ## Run with Docker Compose behind nginx reverse proxy
+
+</summary>
 
 * Run:
 
@@ -142,3 +166,4 @@ Another ifconfig-like web application. This one is written in Python with Flask 
   wget --no-check-certificate -qO - <host>[/ip|/host|/xff|/ua|/headers|/city|/country]
   ```
   Or navigate to `<host>` from your browser. It will automatically redirect to https and you have to accept the self-signed certificate.
+</details>
