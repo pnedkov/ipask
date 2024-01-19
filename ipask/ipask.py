@@ -14,7 +14,7 @@ def get_app_version():
 
     try:
         ver = (
-            subprocess.check_output(["git", "describe", "--always", "--long"])
+            subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
             .strip()
             .decode()
         )
