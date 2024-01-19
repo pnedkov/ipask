@@ -213,6 +213,16 @@ def return_headers():
 
 
 #
+# /version route
+# Returns the application version
+#
+@app.route("/ver")
+@app.route("/version")
+def return_version():
+    return f"{get_app_version()}\n"
+
+
+#
 # Default '404' response
 #
 @app.errorhandler(404)
