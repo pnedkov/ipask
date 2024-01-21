@@ -155,6 +155,7 @@ def return_ip():
 # /host route
 # Returns the client's FQDN
 #
+@app.route("/h")
 @app.route("/host")
 def return_host():
     c_ip = str(get_client_ip())
@@ -174,6 +175,7 @@ def return_xff():
 # /city route
 # Returns the client's city according to the local GeoIP database
 #
+@app.route("/ci")
 @app.route("/city")
 def return_city():
     c_ip = get_client_ip()
@@ -186,6 +188,7 @@ def return_city():
 # /country route
 # Returns the client's country according to the local GeoIP database
 #
+@app.route("/co")
 @app.route("/country")
 def return_country():
     c_ip = get_client_ip()
@@ -207,6 +210,7 @@ def return_ua():
 # /headers route
 # Returns all client's HTTP headers
 #
+@app.route("/he")
 @app.route("/headers")
 def return_headers():
     return dict(request.headers)
