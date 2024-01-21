@@ -10,7 +10,7 @@ import geoip2.database
 # git describe --always --long
 #
 def get_app_version():
-    ver = "v0.0.0-0-ga1b2c3d4"
+    ver = "a1b2c3d"
 
     try:
         ver = (
