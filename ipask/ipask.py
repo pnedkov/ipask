@@ -73,7 +73,7 @@ def get_client_host(ip):
 # Gets the client's GeoIP data from a local database file
 #
 def get_client_geo(ip):
-    c_city = c_country = None
+    c_city = c_region = c_country = c_location = None
 
     if geoip:
         try:
@@ -87,9 +87,16 @@ def get_client_geo(ip):
                 pass
             else:
                 c_city = geo_response.city.name
+                c_region = geo_response.subdivisions.most_specific.name
                 c_country = geo_response.country.name
+                c_location = f"{geo_response.location.latitude}, {geo_response.location.longitude}"
 
-    c_geo = {"city": c_city, "country": c_country}
+    c_geo = {
+        "city": c_city,
+        "region": c_region,
+        "country": c_country,
+        "location": c_location,
+    }
 
     return c_geo
 
@@ -120,7 +127,9 @@ def home():
     ):
         client_geo = get_client_geo(client_ip)
         client_city = client_geo.get("city")
+        client_region = client_geo.get("region")
         client_country = client_geo.get("country")
+        client_location = client_geo.get("location")
 
         client_info = {
             "ip": client_ip,
@@ -129,7 +138,9 @@ def home():
             "user_agent": client_ua,
             "headers": format_headers(request.headers),
             "city": client_city,
+            "region": client_region,
             "country": client_country,
+            "location": client_location,
             "server_host": request.host,
         }
 
@@ -185,6 +196,19 @@ def return_city():
 
 
 #
+# /region route
+# Returns the client's region/state according to the local GeoIP database
+#
+@app.route("/reg")
+@app.route("/region")
+def return_region():
+    c_ip = get_client_ip()
+    c_geo = get_client_geo(c_ip)
+    c_geo_region = c_geo.get("region")
+    return f"{c_geo_region}\n"
+
+
+#
 # /country route
 # Returns the client's country according to the local GeoIP database
 #
@@ -195,6 +219,19 @@ def return_country():
     c_geo = get_client_geo(c_ip)
     c_geo_country = c_geo.get("country")
     return f"{c_geo_country}\n"
+
+
+#
+# /location route
+# Returns the client's country according to the local GeoIP database
+#
+@app.route("/loc")
+@app.route("/location")
+def return_location():
+    c_ip = get_client_ip()
+    c_geo = get_client_geo(c_ip)
+    c_geo_location = c_geo.get("location")
+    return f"{c_geo_location}\n"
 
 
 #
