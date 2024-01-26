@@ -7,7 +7,7 @@ import geoip2.database
 
 #
 # Gets the application version from the git repository
-# git describe --always --long
+# git rev-parse --short HEAD
 #
 def get_app_version():
     ver = "a1b2c3d"
