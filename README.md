@@ -1,7 +1,7 @@
 # IP Ask
-Another ifconfig-like web application. This one is written in Python with Flask framework.
+`whatsmyip` type of web application written in Python with Flask framework
 
-<a href="https://ipask.me"><kbd>ipask.me</kbd></a>
+[ipask.me](https://ipask.me)
 
 ---
 <details>
@@ -11,9 +11,9 @@ Another ifconfig-like web application. This one is written in Python with Flask 
 
 </summary>
 
-* Install Python:
+* Install Git and Python:
   ```
-  pacman -S python
+  sudo pacman -S git python
   ```
 
 * Clone the git repository:
@@ -35,6 +35,8 @@ Another ifconfig-like web application. This one is written in Python with Flask 
 
 * (Optional) Download the GeoIP database:
 
+  The GeoIP feature is toggled with the `GEOIP` environment variable which is disabled by default. Enabling `GEOIP` would not do any good if the client's IP address is from a private network. The `GeoLite2-City.mmdb` file is being included in the container - check the `Dockerfile`.
+
   Credit: https://github.com/P3TERX/GeoLite.mmdb
 
     * wget:
@@ -45,19 +47,7 @@ Another ifconfig-like web application. This one is written in Python with Flask 
       ```
       curl -L git.io/GeoLite2-City.mmdb -o resources/GeoLite2-City.mmdb
       ```
-    The GeoIP feature is toggled with the `GEOIP` environment variable.
-      
-* (Optional) Generate the test key and certificate utilized by the nginx reverse proxy.
-  
-  You only need this if you utilize `docker-compose.yaml` and run IP Ask behind nginx.
 
-  Review the environment variables inside `resources/generate_cert.sh` and set them accordingly like so:
-  ```sh
-  CN=yourdomain.com ./resources/generate_cert.sh
-  ```
-  Or you could use your own key and certificate. `docker-compose.yaml` expects to find them here:
-  - $HOME/.nginx/key.pem
-  - $HOME/.nginx/cert.pem
 </details>
 
 ---
@@ -68,47 +58,42 @@ Another ifconfig-like web application. This one is written in Python with Flask 
 
 </summary>
 
-
-* Run using `run.sh`:
-  ```sh
-  ./run.sh
-  ```
-  Environment variables:
-  | ENV var | Default value |
-  | :----: | :----: |
-  | GUNICORN_SERVER | ipask |
-  | [GUNICORN_WORKERS](https://docs.gunicorn.org/en/stable/settings.html#workers) | CPU Cores * 2 + 1 |
-  | [GUNICORN_THREADS](https://docs.gunicorn.org/en/stable/settings.html#threads) | 1 |
-  | GEOIP | false |
-  | REVERSE_DNS_LOOKUP | false |
-
-  Example:
-  ```sh
-  REVERSE_DNS_LOOKUP=true GUNICORN_WORKERS=4 GUNICORN_THREADS=2 ./run.sh
-  ```
+* Environment variables:
+  | Environment variable | Default value |
+  | --- | --- |
+  | GEOIP | `false` |
+  | REVERSE_DNS_LOOKUP | `false` |
 
 * Run using `run.py`:
 
-  This will run it without the Python WSGI HTTP Server - [gunicorn](https://gunicorn.org):
   ```sh
   python run.py
   ```
 
-* Test:
+  Example:
   ```sh
-  $ curl <host>:8080[/ip|/host|/xff|/ua|/headers|/city|/country]
-  $ wget -qO - <host>:8080[/ip|/host|/xff|/ua|/headers|/city|/country]
+  REVERSE_DNS_LOOKUP=true python run.py
   ```
-  Or navigate to `http://<host>:8080` from your browser.
-
----
-## Prerequisites for running in a container
-
+  
+* Run using `run.sh` (recommended):
+  
+  This will run the application with the Python WSGI HTTP Server - [gunicorn](https://gunicorn.org):
+  
   ```sh
-  sudo pacman -S docker docker-compose docker-buildx
-  sudo usermod -aG docker $USER
-  sudo systemctl enable -now docker.service
+  ./run.sh
   ```
+  Gunicorn-specific environment variables:
+  | Environment variable | Default value |
+  | --- | --- |
+  | GUNICORN_SERVER | `ipask` |
+  | [GUNICORN_WORKERS](https://docs.gunicorn.org/en/stable/settings.html#workers) | `CPU Cores * 2 + 1` |
+  | [GUNICORN_THREADS](https://docs.gunicorn.org/en/stable/settings.html#threads) | `1` |
+
+  Example:   
+  ```sh
+  REVERSE_DNS_LOOKUP=true GUNICORN_WORKERS=3 ./run.sh
+  ```
+
 </details>
 
 ---
@@ -118,6 +103,14 @@ Another ifconfig-like web application. This one is written in Python with Flask 
 ## Run in a stand-alone container
 
 </summary>
+
+* Prerequisites:
+
+  ```sh
+  sudo pacman -S docker docker-compose docker-buildx
+  sudo usermod -aG docker $USER
+  sudo systemctl enable --now docker.service
+  ```
 
 * Build:
   ```sh
@@ -129,12 +122,6 @@ Another ifconfig-like web application. This one is written in Python with Flask 
   docker run -d -p 8080:8080 ipask
   ```
 
-* Test:
-  ```sh
-  curl <host>:8080[/ip|/host|/xff|/ua|/headers|/city|/country]
-  wget -qO - <host>:8080[/ip|/host|/xff|/ua|/headers|/city|/country]
-  ```
-  Or navigate to `http://<host>:8080` from your browser.
 </details>
 
 ---
@@ -144,26 +131,67 @@ Another ifconfig-like web application. This one is written in Python with Flask 
 ## Run with Docker Compose behind nginx reverse proxy
 
 </summary>
-
-* Run:
-
-  Two options: Build the container or pull the latest published container version from hub.docker.com
+      
+* Generate a self-signed test key-pair utilized by the nginx reverse proxy.
   
-  * Build and run:
-    ```sh
-    docker compose up -d
-    ```
-    Use the `--build` option in order to force the build process in case you already have the `ipask` container and want a new one.
-
-  * Pull and run:
-    ```sh
-    docker compose -f docker-compose.yaml up -d
-    ```
-
-* Test:
+  Review the environment variables inside `resources/generate_cert.sh` and set them accordingly.
+  For example:
   ```sh
-  curl -kL <host>[/ip|/host|/xff|/ua|/headers|/city|/country]
-  wget --no-check-certificate -qO - <host>[/ip|/host|/xff|/ua|/headers|/city|/country]
+  CN=yourdomain.com ./resources/generate_cert.sh
   ```
-  Or navigate to `<host>` from your browser. It will automatically redirect to https and you have to accept the self-signed certificate.
+  Or you could use your own key and certificate. `docker-compose.yaml` expects to find them here:
+  - $HOME/.nginx/key.pem
+  - $HOME/.nginx/cert.pem
+
+* (Option A): Pull the latest container version from hub.docker.com and run it:
+  ```sh
+  docker compose -f docker-compose.yaml up -d
+  ```
+  
+* (Option B): Build the container from the source and run it:
+  ```sh
+  docker compose up -d
+  ```
+  Use the `--build` option in order to force the build process in case you already have the `ipask` container and want a new one.
+
+</details>
+
+---
+<details>
+<summary>
+  
+## Usage
+
+</summary>
+
+* If running `ipask` as a stand-alone application:
+  ```sh
+  $ curl <host>:8080
+  $ wget -qO - <host>:8080
+  ```
+  
+  Or navigate to `http://<host>:8080` from your browser.
+
+* If runing `ipask` with nginx reverse proxy:
+  ```sh
+  $ curl -kL <host>
+  $ wget --no-check-certificate -qO - <host>
+  ```
+  
+  Or navigate to `<host>` from your browser. It will automatically redirect to https.
+  
+* Available URL paths:
+  | Path | Alias | Description |
+  | --- | --- | --- |
+  | `/ip` | | IP address |
+  | `/host` | `/h` | Hostname or FQDN (if `REVERSE_DNS_LOOKUP` is enabled) |
+  | `/xff` | | X-Forwarded-For header |
+  | `/city` | `/ci` | City (if `GEOIP` is enabled) |
+  | `/region` | `/reg` | Region (if `GEOIP` is enabled) |
+  | `/country` | `/co` |  Country (if `GEOIP` is enabled) |
+  | `/location` | `/loc` | GPS Coordinates (if `GEOIP` is enabled) |
+  | `/ua` | |  User-Agent request header |
+  | `/headers` | `/he` | All headers |
+  | `/version` | `/ver` | Application version (commit hash) |
+
 </details>
