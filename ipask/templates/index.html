@@ -29,10 +29,20 @@
                 <td>{{ client_info.xff }}</td>
             </tr>
             {% endif %}
-            {% if client_info.city and client_info.country and client_info.region and client_info.location %}
+            {% if client_info.city and client_info.region and client_info.country %}
             <tr>
-                <td>curl {{ client_info.server_host }}/city<br>curl {{ client_info.server_host }}/country</td>
-                <td>{{ client_info.city }}, {{ client_info.region }}, {{ client_info.country }} ({{ client_info.location }})</td>
+                <td>
+                    curl {{ client_info.server_host }}/city<br>
+                    curl {{ client_info.server_host }}/region<br>
+                    curl {{ client_info.server_host }}/country
+                </td>
+                <td>{{ client_info.city }}, {{ client_info.region }}, {{ client_info.country }}</td>
+            </tr>
+            {% endif %}
+            {% if client_info.location %}
+            <tr>
+                <td>curl {{ client_info.server_host }}/location</td>
+                <td>{{ client_info.location }}</td>
             </tr>
             {% endif %}
             <tr>
