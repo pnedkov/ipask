@@ -1,0 +1,34 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: ${AWS_EKS_CLUSTER_NAME}
+  region: ${AWS_EKS_REGION}
+  version: "${AWS_EKS_VERSION}"
+
+kubernetesNetworkConfig:
+  IpFamily: ipv4
+  serviceIPv4CIDR: ${AWS_EKS_CIDR}
+
+iam:
+  withOIDC: true
+
+managedNodeGroups:
+  - name: ng1
+    instanceType: t3.small
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 2
+    volumeSize: 10
+    volumeType: "gp3"
+    volumeEncrypted: true
+    volumeIOPS: 3000
+    volumeThroughput: 125
+    labels: { role: workers }
+    tags:
+      nodegroup-role: worker
+    #privateNetworking: true
+#   ssh:
+#     allow: true
+#     publicKeyName: myPublicKeyName

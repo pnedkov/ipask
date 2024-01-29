@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ipask
+  #labels:
+  #  app: ipask
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ipask
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 300
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: ipask
+    spec:
+      containers:
+        - name: ipask-ctr
+          image: prestigen/ipask:${IPASK_VERSION}
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:
+            - name: IPASK_PROD
+              value: "true"
+            - name: GEOIP
+              value: "true"
+            - name: REVERSE_DNS_LOOKUP
+              value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipask-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: ipask

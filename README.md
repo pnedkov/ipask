@@ -215,3 +215,16 @@ cd ipask/
   ```
 
 </details>
+
+---
+
+<details>
+<summary>
+
+## Run on AWS Elastic Kubernetes Service
+
+</summary>
+
+[k8s/README.md](k8s/README.md)
+
+</details>
