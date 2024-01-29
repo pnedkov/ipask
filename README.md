@@ -25,7 +25,7 @@
   git clone https://github.com/pnedkov/ipask.git
   cd ipask/
   CN=yordomain.com ./resources/generate_cert.sh
-  docker compose -f docker-compose.yaml up -d
+  docker compose -f compose.yaml up -d
   ```
 
 </details>
