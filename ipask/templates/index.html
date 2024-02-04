@@ -5,6 +5,15 @@
     <title>IP Ask</title>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          $('#flipper').nextUntil('#flipper').hide();
+          $("#flipper").click(function(){
+            $("#panel").slideToggle("slow");
+          });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -51,7 +60,10 @@
             </tr>
             <tr>
                 <td>curl {{ client_info.server_host }}/headers</td>
-                <td>{{ client_info.headers|safe }}</td>
+                <td>
+                    <div id="flipper">Show/hide headers</div>
+                    <div id="panel">{{ client_info.headers|safe }}</div>
+                </td>
             </tr>
             <tr>
                 <th colspan="2"># <span class="blink">|</span></th>

@@ -66,6 +66,7 @@ td:nth-child(1) {
     color: var(--white);
     font-size: 1.1em;
     overflow: hidden;
+    width: 1%;
     white-space: nowrap;
 }
 
@@ -109,4 +110,12 @@ p {
     font-size: 2em;
     font-weight: bold;
     color: var(--green);
+}
+
+#flipper {
+    font-weight: bold;
+}
+
+#flipper, #panel {
+    text-align: left;
 }
