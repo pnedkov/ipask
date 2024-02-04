@@ -98,6 +98,22 @@ Follow the [official guide](https://docs.aws.amazon.com/eks/latest/userguide/aws
 
 ---
 
+## Install [Kubernetes Metrics Server](https://github.com/kubernetes-sigs/metrics-server)
+
+```sh
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/high-availability-1.21+.yaml
+```
+
+---
+
+## Install [k9s](https://k9scli.io/)
+
+```sh
+pacman -S k9s
+```
+
+---
+
 ## Build and push the container to hub.docker.com
 
 Handled by the CI/CD
