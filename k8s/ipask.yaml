@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ipask
-  #labels:
-  #  app: ipask
+  labels:
+    app: ipask
+  annotations:
+    kubernetes.io/change-cause: ${IPASK_VERSION}
 spec:
   replicas: 2
   selector:
